@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int insertUser(UserVO user) { // 회원가입
 		int n = 0;
-		String sql = "INSERT INTO USERS VALUES(?,?,?,?,?,?)";
+		String sql = "INSERT INTO USERS VALUES(?,?,?,?,?)";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, user.getUserId());
@@ -28,7 +28,6 @@ public class UserServiceImpl implements UserService {
 			psmt.setString(3, user.getUserPhone());
 			psmt.setString(4, user.getUserAddress());
 			psmt.setString(5, user.getUserNickname());
-			psmt.setInt(6, user.getProductId());
 			n = psmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
