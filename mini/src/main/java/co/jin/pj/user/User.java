@@ -2,10 +2,13 @@ package co.jin.pj.user;
 
 import java.util.Scanner;
 
+import co.jin.pj.user.service.UserService;
 import co.jin.pj.user.service.UserVO;
+import co.jin.pj.user.serviceImpl.UserServiceImpl;
 
 public class User {
 	static Scanner scn = new Scanner(System.in);
+	static UserService service = new UserServiceImpl();
 	
 	public static void userInsert() {    /// 가입
 		UserVO vo = new UserVO();
@@ -34,6 +37,8 @@ public class User {
 		System.out.println("닉네임");
 		vo.setUserNickname(scn.nextLine());
 //		String userNickname = scn.nextLine();
+		
+		service.insertUser(vo);
 		
 		
 		

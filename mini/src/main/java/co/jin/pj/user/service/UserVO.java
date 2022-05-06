@@ -9,6 +9,7 @@ public class UserVO {
 	private String userPhone;
 	private String userAddress;
 	private String userNickname;
+	private int productId = 0;
 	
 	
 	

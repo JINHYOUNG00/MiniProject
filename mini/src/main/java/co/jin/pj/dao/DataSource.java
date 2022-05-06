@@ -27,6 +27,7 @@ public class DataSource {
 		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, user, password);
+			System.out.println("연결완료");
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
@@ -35,7 +36,7 @@ public class DataSource {
 
 	private void dbConfig() {
 		Properties properties = new Properties();
-		String resource = getClass().getResource("/db.properties").getFile();
+		String resource = getClass().getResource("/db.properties").getPath();
 		try {
 			properties.load(new FileInputStream(resource));
 
