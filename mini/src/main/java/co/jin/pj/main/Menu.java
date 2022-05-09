@@ -5,43 +5,64 @@ import java.util.Scanner;
 import co.jin.pj.user.User;
 
 public class Menu {
-	
-	private Scanner scn = new Scanner(System.in);
-	private int menu;
-	
-	
+
+	private static Scanner scn = new Scanner(System.in);
+	private static int menu;
+
 	public void main() {
-		
+
 		boolean b = true;
-		while(b) {
+		while (b) {
 			System.out.println("======================================");
 			System.out.println("1. 로그인 2. 회원가입 3. 블랙리스트 4. 종료");
 			System.out.println("======================================");
 			System.out.print("이용하실 메뉴를 입력하세요 >> ");
 			menu = scn.nextInt();
 			scn.nextLine();
-			if(menu == 1) {
-				signIn();
-			} else if(menu == 2) {
+			if (menu == 1) {
+				User.login();
+			} else if (menu == 2) {
 				User.userInsert();
-				
-			} else if(menu == 3) {
-				blackList();
-			} else if(menu == 4) {
+			} else if (menu == 3) {
+				User.userUpdate();
+			} else if (menu == 4) {
 				System.out.println("프로그램을 종료합니다.");
 				break;
-			}			
+			}
 		}
 	}
-	
-	private void signIn() {
+
+	public static void loginMenu() {
+		boolean b = true;
+		while (b) {
+			System.out.println("====================================================");
+			System.out.println("1. 물품리스트 2. 물품검색 3. 물품등록 4. 회원메뉴 5. 로그아웃");
+			System.out.println("====================================================");
+			System.out.print("이용하실 메뉴를 입력하세요 >> ");
+			menu = scn.nextInt();
+			scn.nextLine();
+			if (menu == 1) {
+				User.login();
+			} else if (menu == 2) {
+				User.userInsert();
+			} else if (menu == 3) {
+				User.userUpdate();
+			} else if (menu == 4) {
+				System.out.println("프로그램을 종료합니다.");
+				break;
+			}
+		}
 		
+		
+
 	}
+
 	private void signUp() {
-		
+
 	}
+
 	private void blackList() {
-		
+
 	}
 
 }
