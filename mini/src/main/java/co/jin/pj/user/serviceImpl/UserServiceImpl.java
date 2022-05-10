@@ -63,6 +63,32 @@ public class UserServiceImpl implements UserService {
 
 		return n;
 	}
+	@Override
+	public List<UserVO> allListSelect() {
+		List<UserVO> list = new ArrayList<UserVO>();
+		
+		String sql = "SELECT USER_ID, USER_NICKNAME FROM USERS";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+
+			while (rs.next()) {
+
+				vo = new UserVO();
+				vo.setUserId(rs.getString("USER_ID"));
+				vo.setUserNickname(rs.getString("USER_NICKNAME"));
+
+				list.add(vo);
+
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+
+		return list;
+	}
 
 	@Override
 	public List<UserVO> blackListSelect() {
@@ -114,10 +140,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int deleteUser(UserVO user) { // 회원탈퇴
 		int n = 0;
-		String sql = "DELETE FROM USERS WHERE USER_PASSWORD = ?";
+		String sql = "DELETE FROM USERS WHERE USER_ID = ? AND USER_PASSWORD = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, user.getUserPassword());
+			psmt.setString(1, user.getUserId());
+			psmt.setString(2, user.getUserPassword());
 
 			n = psmt.executeUpdate();
 		} catch (SQLException e) {
@@ -142,6 +169,28 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserVO selectUser(UserVO user) {
 		
+		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME FROM USERS WHERE USER_ID = ? AND USER_PASSWORD = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, user.getUserId());
+			psmt.setString(2, user.getUserPassword());
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				vo = new UserVO();
+				vo.setUserId(rs.getString("USER_ID"));
+				vo.setUserPhone(rs.getString("PHONE_NUMBER"));
+				vo.setUserAddress(rs.getString("ADDRESS"));
+				vo.setUserNickname(rs.getString("USER_NICKNAME"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return vo;
+	}
+
+	@Override
+	public UserVO selectUser2(UserVO user) {
 		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME FROM USERS WHERE USER_ID = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
@@ -154,15 +203,12 @@ public class UserServiceImpl implements UserService {
 				vo.setUserPhone(rs.getString("PHONE_NUMBER"));
 				vo.setUserAddress(rs.getString("ADDRESS"));
 				vo.setUserNickname(rs.getString("USER_NICKNAME"));
-				
 			}
-			
-			
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return vo;
 	}
+
 
 }

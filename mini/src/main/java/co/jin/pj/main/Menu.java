@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import co.jin.pj.product.Product;
 import co.jin.pj.user.User;
 import co.jin.pj.user.service.UserService;
 import co.jin.pj.user.service.UserVO;
@@ -34,6 +35,7 @@ public class Menu {
 				User.blackList();
 			} else if (menu == 4) {
 				System.out.println("프로그램을 종료합니다.");
+				System.exit(0);
 				break;
 			}
 		}
@@ -49,11 +51,11 @@ public class Menu {
 			menu = scn.nextInt();
 			scn.nextLine();
 			if (menu == 1) {
-				User.login();
+				Product.productSelectList();
 			} else if (menu == 2) {
-				User.userInsert();
+				Product.selectProduct();
 			} else if (menu == 3) {
-				User.blackList();
+				Product.productInsert();
 			} else if (menu == 4) {
 				
 			} else if (menu == 5) {
@@ -71,9 +73,9 @@ public class Menu {
 	private static void memberMenu() {
 		boolean b = true;
 		while (b) {
-			System.out.println("=================================");
+			System.out.println("=============================================");
 			System.out.println("1. 회원정보 2. 회원정보 수정 3. 회원탈퇴 4. 돌아가기");
-			System.out.println("=================================");
+			System.out.println("=============================================");
 			System.out.print("이용하실 메뉴를 입력하세요 >> ");
 			menu = scn.nextInt();
 			scn.nextLine();
@@ -81,9 +83,9 @@ public class Menu {
 				User.selectUser();
 			} else if (menu == 2) {
 				User.userUpdate();
-			} else if (menu == 4) {
-//				User.userDelete();
 			} else if (menu == 3) {
+				User.userDelete();
+			} else if (menu == 4) {
 				loginMenu();
 			}
 		}

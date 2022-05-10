@@ -5,21 +5,15 @@ import lombok.Data;
 @Data
 public class ProductVO {
 	
-	private int productId;
+	private int productId = 1;
 	private String productTitle;
 	private String productCategory;
 	private int productPrice;
 	private String productDetail;
-	private String costomerName;
+	private String customerName;
+	private String userId;
 
 
-	public ProductVO() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	
-	
-	
 	
 
 }
