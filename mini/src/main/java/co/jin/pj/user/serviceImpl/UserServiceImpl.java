@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
 	public List<UserVO> blackListSelect() {
 		List<UserVO> blacklist = new ArrayList<UserVO>();
 
-		String sql = "SELECT USER_ID, USER_NICKNAME FROM USERS WHERE BLACK_LIST = 'N'";
+		String sql = "SELECT USER_ID, USER_NICKNAME FROM USERS WHERE BLACK_LIST = 'Y'";
 		try {
 			psmt = conn.prepareStatement(sql);
 			rs = psmt.executeQuery();

@@ -13,10 +13,13 @@ public class User {
 	static Scanner scn = new Scanner(System.in);
 	static UserService service = new UserServiceImpl();
 	static List<UserVO> list = new ArrayList<UserVO>();
-
+	
+	public static String loginUserId;
+	
 	public static void login() {
 		UserVO vo = new UserVO();
-		System.out.println("============ 로 그 인 ============");
+		clearScreen();
+		System.out.println("======================== 로 그 인 ========================");
 		System.out.print("ID >>");
 		String userId = scn.nextLine();
 		vo.setUserId(userId);
@@ -26,13 +29,15 @@ public class User {
 		int result = service.loginUser(vo);
 
 		if (result == 1) {
+			loginUserId = userId;  
 			Menu.loginMenu();
 		}
 	}
 
 	public static void userInsert() { /// 가입
 		UserVO vo = new UserVO();
-		System.out.println("============ 회 원 가 입 ============");
+		clearScreen();
+		System.out.println("======================== 회 원 가 입 ========================");
 		System.out.print("ID >>");
 		while (true) {
 			String userId = scn.nextLine();
@@ -72,7 +77,7 @@ public class User {
 	}
 
 	public static void userDelete() { /// 회원 탈퇴
-		System.out.println("============ 회 원 탈 퇴 ============");
+		System.out.println("======================== 회 원 탈 퇴 ========================");
 		UserVO vo = new UserVO();
 		System.out.print("삭제할 ID >>");
 		String userId = scn.nextLine();
@@ -85,7 +90,8 @@ public class User {
 	}
 
 	public static void blackList() {
-		System.out.println("============ 블 랙 리 스 트 명 단 ============");
+		clearScreen();
+		System.out.println("======================== 블 랙 리 스 트 명 단 ========================");
 		list = service.blackListSelect();
 		for (UserVO vo : list) {
 			System.out.printf("ID : %s  닉네임 : %s \n", vo.getUserId(), vo.getUserNickname());
@@ -93,22 +99,35 @@ public class User {
 	}
 
 	public static void selectUser() {
+		clearScreen();
+		System.out.println("======================== 회 원 정 보 조 회 ========================");
 		UserVO vo = new UserVO();
-		System.out.println("============ 회 원 정 보 조 회 ============");
+		UserVO vo2 = new UserVO();
 		System.out.print("조회할 ID >>");
-		vo.setUserId(scn.nextLine());
+		String id = scn.nextLine();
+		vo2.setUserId(id);
 		System.out.print("비밀번호 >>");
-		vo.setUserPassword(scn.nextLine());
-
+		String password = scn.nextLine();
+		vo2.setUserPassword(password);
+		
+		
+		if(id.equals(service.selectUser(vo2).getUserId())) {
+		vo.setUserId(id);
+		vo.setUserPassword(password);
 		vo = service.selectUser(vo);
-
+		
 		System.out.printf("ID : %s  연락처 : %s  주소 : %s  닉네임 : %s \n", vo.getUserId(), vo.getUserPhone(),
 				vo.getUserAddress(), vo.getUserNickname());
+		} else {
+			System.out.println("ID, 비밀번호가 일치하지 않습니다.");
+		}
+
 	}
 
 	public static void userUpdate() { /// 회원정보 수정
 		UserVO vo = new UserVO();
-		System.out.println("============ 회 원 정 보 수 정 ============");
+		clearScreen();
+		System.out.println("======================== 회 원 정 보 수 정 ========================");
 		System.out.print("현재 ID >>");
 		String userId = scn.nextLine();
 		vo.setUserId(userId);
@@ -129,6 +148,11 @@ public class User {
 		vo.setUserNickname(scn.nextLine());
 
 		service.updateUser(vo);
+	}
+	
+	public static void clearScreen() {
+		for (int i = 0; i < 80; i++)
+			System.out.println("");
 	}
 
 }

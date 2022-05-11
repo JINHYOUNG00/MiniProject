@@ -12,6 +12,7 @@ public class ProductVO {
 	private String productDetail;
 	private String customerName;
 	private String userId;
+	private String status;
 
 
 	

@@ -10,5 +10,6 @@ public interface ProductService {
 	int insertProduct(ProductVO product); //물품 등록
 	int updateProduct(ProductVO product); //물품 갱신
 	int deleteProduct(ProductVO product); //물품 삭제
-
+	int buyProduct(ProductVO product);
+	
 }
