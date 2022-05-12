@@ -17,7 +17,20 @@ public class UserServiceImpl implements UserService {
 	private PreparedStatement psmt; // sql 명령실행
 	private ResultSet rs; // select 결과를 담음
 
-	UserVO vo = new UserVO();
+//	UserVO vo = new UserVO();
+
+	private void close() {
+		try {
+			if (rs != null)
+				rs.close();
+			if (psmt != null)
+				psmt.close();
+			if (conn != null)
+				conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public int loginUser(UserVO user) {
@@ -66,6 +79,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserVO> allListSelect() {
 		List<UserVO> list = new ArrayList<UserVO>();
+		UserVO vo = new UserVO();
 		
 		String sql = "SELECT USER_ID, USER_NICKNAME FROM USERS";
 		
@@ -93,6 +107,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserVO> blackListSelect() {
 		List<UserVO> blacklist = new ArrayList<UserVO>();
+		UserVO vo = new UserVO();
 
 		String sql = "SELECT USER_ID, USER_NICKNAME FROM USERS WHERE BLACK_LIST = 'Y'";
 		try {
@@ -119,6 +134,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int updateUser(UserVO user) { // 회원정보 수정
 		int n = 0;
+//		UserVO vo = new UserVO();
 		String sql = "UPDATE USERS SET USER_PASSWORD = ?, PHONE_NUMBER = ?, ADDRESS = ?, USER_NICKNAME = ? WHERE USER_ID = ? and USER_PASSWORD = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
@@ -140,6 +156,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int deleteUser(UserVO user) { // 회원탈퇴
 		int n = 0;
+		UserVO vo = new UserVO();
 		String sql = "DELETE FROM USERS WHERE USER_ID = ? AND USER_PASSWORD = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
@@ -153,21 +170,10 @@ public class UserServiceImpl implements UserService {
 		return n;
 	}
 
-	private void close() {
-		try {
-			if (rs != null)
-				rs.close();
-			if (psmt != null)
-				psmt.close();
-			if (conn != null)
-				conn.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public UserVO selectUser(UserVO user) {
+		UserVO vo = new UserVO();
 		
 		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME FROM USERS WHERE USER_ID = ? AND USER_PASSWORD = ?";
 		try {
@@ -191,7 +197,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserVO selectUser2(UserVO user) {
-		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME FROM USERS WHERE USER_ID = ?";
+		UserVO vo = new UserVO();
+		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME, BLACK_LIST, USER_PASSWORD FROM USERS WHERE USER_ID = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, user.getUserId());
@@ -203,10 +210,12 @@ public class UserServiceImpl implements UserService {
 				vo.setUserPhone(rs.getString("PHONE_NUMBER"));
 				vo.setUserAddress(rs.getString("ADDRESS"));
 				vo.setUserNickname(rs.getString("USER_NICKNAME"));
+				vo.setBlackList(rs.getString("BLACK_LIST"));
+				vo.setUserPassword(rs.getString("USER_PASSWORD"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
+		} 
 		return vo;
 	}
 

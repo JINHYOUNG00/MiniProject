@@ -11,5 +11,6 @@ public interface ProductService {
 	int updateProduct(ProductVO product); //물품 갱신
 	int deleteProduct(ProductVO product); //물품 삭제
 	int buyProduct(ProductVO product);
+	List<ProductVO> sellProcess();
 	
 }

@@ -10,6 +10,7 @@ import java.util.List;
 import co.jin.pj.product.Product;
 import co.jin.pj.product.service.ProductService;
 import co.jin.pj.product.service.ProductVO;
+import co.jin.pj.user.User;
 import co.jin.pj.dao.DataSource;
 
 public class ProductServiceImpl implements ProductService {
@@ -56,6 +57,43 @@ public class ProductServiceImpl implements ProductService {
 
 		return products;
 	}
+	
+	@Override
+	public List<ProductVO> sellProcess() { // 판매중인 물품 조회
+		List<ProductVO> products = new ArrayList<ProductVO>();
+		ProductVO product;
+		String sql = "SELECT PRODUCT_ID, u.user_id,phone_number,u.address,PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, CUSTOMER_ID , PRODUCT_DETAIL, status\r\n"
+				+ "				FROM products p JOIN users u\r\n"
+				+ "				ON p.user_id = u.user_id\r\n"
+				+ "                where u.user_id = ? and status = '거래중'\r\n"
+				+ "				order by p.product_id asc";
+		try {
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+
+			
+			while (rs.next()) {
+				product = new ProductVO();
+				product.setProductId(rs.getInt("PRODUCT_ID"));
+				product.setAddress(rs.getString("ADRESS"));
+				product.setPhoneNum(rs.getString("PHONE_NUMBER"));
+				product.setUserId(rs.getString("User_ID"));
+				product.setProductTitle(rs.getString("PRODUCT_TITLE"));
+				product.setProductPrice(rs.getInt("PRICE"));
+				product.setProductCategory(rs.getString("PRODUCT_CATEGORY"));
+				product.setProductDetail(rs.getString("PRODUCT_DETAIL"));
+				product.setStatus(rs.getString("status"));
+				product.setCustomerName(rs.getString("CUSTOMER_ID"));
+				products.add(product);
+			}
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return products;
+	}
 
 	@Override
 	public ProductVO selectProduct(ProductVO product) {
@@ -87,21 +125,21 @@ public class ProductServiceImpl implements ProductService {
 
 		return vo;
 	}
+	
+	
 
 	@Override
 	public int insertProduct(ProductVO product) { //물품 등록
 		int n = 0;
-		String sql = "INSERT INTO PRODUCTS VALUES(?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO PRODUCTS VALUES(PRODUCT_SEQ.NEXTVAL,?,?,?,?,?,?,?)";
 		try {
 			psmt = conn.prepareStatement(sql);
-			
-			psmt.setString(7, product.getUserId());
-			psmt.setString(2, product.getProductTitle());
-			psmt.setString(4, product.getProductCategory());
-			psmt.setInt(3, product.getProductPrice());
-			psmt.setString(5, product.getProductDetail());
-			psmt.setInt(1, product.getProductId());
-			psmt.setString(6, product.getCustomerName());
+			psmt.setString(1, product.getProductTitle());
+			psmt.setInt(2, product.getProductPrice());
+			psmt.setString(3, product.getProductCategory());
+			psmt.setString(4, product.getProductDetail());
+			psmt.setString(5, product.getCustomerName());
+			psmt.setString(6, product.getUserId());
 			psmt.setString(7, product.getStatus());
 			
 			
@@ -135,9 +173,11 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int deleteProduct(ProductVO product) {
 		int n = 0;
-		String sql = "DELETE FROM PRODUCTS WHERE PRODUCTID";
+		String sql = "DELETE FROM PRODUCTS WHERE PRODUCTID = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
+			
+			psmt.setString(1, sql);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -160,10 +200,12 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int buyProduct(ProductVO product) {
 		int n = 0;
-		String sql = "UPDATE PRODUCTS SET STATUS = '거래중' WHERE PRODUCT_ID = ?";
+		String sql = "UPDATE PRODUCTS SET STATUS = '거래중', customer_name = ? WHERE PRODUCT_ID = ?";
+		
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setInt(1, product.getProductId());
+			psmt.setString(1, User.loginUserId);
+			psmt.setInt(2, product.getProductId());
 			
 			n = psmt.executeUpdate();
 			
