@@ -246,6 +246,21 @@ public class UserServiceImpl implements UserService {
 		}
 		return n;
 	}
-
+	@Override
+	public int addBlackList(UserVO user) {
+		int n = 0;
+		String sql = "UPDATE USERS SET black_List = 'Y' WHERE USER_ID = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1,user.getUserId());
+			n = psmt.executeUpdate();
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return n;
+	}
 
 }

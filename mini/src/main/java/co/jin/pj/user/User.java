@@ -113,6 +113,13 @@ public class User {
 			System.out.printf("ID : %s  닉네임 : %s \n", vo.getUserId(), vo.getUserNickname());
 		}
 	}
+//	public static void addBlackList() {
+//		// 만약 환불횟수가 5번 이상이되면 블랙리스트를 N에서 Y로 변경한다.
+//		
+////		if (service.selectUser2(null))
+//		
+//		
+//	}
 
 	public static void selectUser() {
 		clearScreen();

@@ -15,6 +15,7 @@ public interface UserService {
 	int deleteUser(UserVO user); //한명 삭제
 	int loginUser(UserVO user); // 로그인
 	int refundUpdate(UserVO user);
+	int addBlackList(UserVO user);
 	
 
 }

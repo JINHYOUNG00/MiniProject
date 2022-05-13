@@ -360,6 +360,7 @@ public class Product {
 				if (service.selectProduct(vo).getStatus().equals("거래가능")) {
 					vo.setProductId(input2);
 					service.buyProduct(vo);
+					System.out.println("구입신청되었습니다. \n#####  판매자 정보는 회원메뉴 5번 구매중인물품조회에 있습니다.  ######");
 				} else if (!service.selectProduct(vo).getStatus().equals("거래가능")) {
 					System.out.println("판매중인 물품이 아닙니다.");
 				}
@@ -396,6 +397,11 @@ public class Product {
 		vo2.setUserId(sellerId);
 		vo2.setRefund(input);
 		service2.refundUpdate(vo2);
+		System.out.println("환불되었습니다.");
+		if (service2.selectUser2(vo2).getRefund() == 10) {
+			service2.addBlackList(vo2);
+		}
+		
 		
 		
 		
