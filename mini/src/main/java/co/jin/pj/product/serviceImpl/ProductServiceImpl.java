@@ -19,10 +19,11 @@ public class ProductServiceImpl implements ProductService {
 	private PreparedStatement psmt; // sql 명령실행
 	private ResultSet rs; // select 결과를 담음
 	
-	ProductVO vo = new ProductVO();
+//	ProductVO vo = new ProductVO();
 		
 	@Override
 	public List<ProductVO> selectListProduct() { // 물품목록조회
+		ProductVO vo = new ProductVO();
 		List<ProductVO> products = new ArrayList<ProductVO>();
 		ProductVO product;
 		String sql = "SELECT PRODUCT_ID, u.user_id, PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, PRODUCT_DETAIL, status\r\n"
@@ -59,31 +60,32 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public List<ProductVO> sellProcess() { // 판매중인 물품 조회
+	public List<ProductVO> selectListProduct2() { // 내가 쓴 글 제외한 물품목록조회
+		ProductVO vo = new ProductVO();
 		List<ProductVO> products = new ArrayList<ProductVO>();
 		ProductVO product;
-		String sql = "SELECT PRODUCT_ID, u.user_id,phone_number,u.address,PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, CUSTOMER_ID , PRODUCT_DETAIL, status\r\n"
+		String sql = "SELECT PRODUCT_ID, u.user_id, PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, PRODUCT_DETAIL, status\r\n"
 				+ "				FROM products p JOIN users u\r\n"
 				+ "				ON p.user_id = u.user_id\r\n"
-				+ "                where u.user_id = ? and status = '거래중'\r\n"
+				+ "                where not u.user_id = ?\r\n"
 				+ "				order by p.product_id asc";
+				
 		try {
 			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, User.loginUserId);
+			
 			rs = psmt.executeQuery();
 
 			
 			while (rs.next()) {
 				product = new ProductVO();
 				product.setProductId(rs.getInt("PRODUCT_ID"));
-				product.setAddress(rs.getString("ADRESS"));
-				product.setPhoneNum(rs.getString("PHONE_NUMBER"));
 				product.setUserId(rs.getString("User_ID"));
 				product.setProductTitle(rs.getString("PRODUCT_TITLE"));
 				product.setProductPrice(rs.getInt("PRICE"));
 				product.setProductCategory(rs.getString("PRODUCT_CATEGORY"));
 				product.setProductDetail(rs.getString("PRODUCT_DETAIL"));
 				product.setStatus(rs.getString("status"));
-				product.setCustomerName(rs.getString("CUSTOMER_ID"));
 				products.add(product);
 			}
 			
@@ -94,11 +96,118 @@ public class ProductServiceImpl implements ProductService {
 
 		return products;
 	}
+	
+	@Override
+	public List<ProductVO> selectListProduct3() { // 내가 구입가능한 물품목록조회
+		ProductVO vo = new ProductVO();
+		List<ProductVO> products = new ArrayList<ProductVO>();
+		ProductVO product;
+		String sql = "SELECT PRODUCT_ID, u.user_id, PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, PRODUCT_DETAIL, status\r\n"
+				+ "								FROM products p JOIN users u\r\n"
+				+ "								ON p.user_id = u.user_id\r\n"
+				+ "				                where not u.user_id = ? and status = '거래가능'\r\n"
+				+ "								order by p.product_id asc";
+				
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, User.loginUserId);
+			
+			rs = psmt.executeQuery();
+
+			
+			while (rs.next()) {
+				product = new ProductVO();
+				product.setProductId(rs.getInt("PRODUCT_ID"));
+				product.setUserId(rs.getString("User_ID"));
+				product.setProductTitle(rs.getString("PRODUCT_TITLE"));
+				product.setProductPrice(rs.getInt("PRICE"));
+				product.setProductCategory(rs.getString("PRODUCT_CATEGORY"));
+				product.setProductDetail(rs.getString("PRODUCT_DETAIL"));
+				product.setStatus(rs.getString("status"));
+				products.add(product);
+			}
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return products;
+	}
+	
+	@Override
+	public List<ProductVO> sellProcessList() { // 판매중인 물품 리스트 조회
+		List<ProductVO> products = new ArrayList<ProductVO>();
+		ProductVO product = new ProductVO();
+		
+		String sql = "SELECT PRODUCT_ID ,CUSTOMER_NAME , PRODUCT_TITLE, PRICE,  STATUS\r\n"
+				+ "						FROM products p JOIN users u\r\n"
+				+ "						ON p.user_id = u.user_id\r\n"
+				+ "				        where u.user_id = ? and status = '거래중'\r\n"
+				+ "						order by p.product_id asc";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, User.loginUserId);
+			rs = psmt.executeQuery();
+
+			
+			while (rs.next()) {
+				product = new ProductVO();
+				product.setProductId(rs.getInt("PRODUCT_ID"));
+				product.setCustomerName(rs.getString("CUSTOMER_NAME"));
+				product.setProductTitle(rs.getString("PRODUCT_TITLE"));
+				product.setProductPrice(rs.getInt("PRICE"));
+				product.setStatus(rs.getString("STATUS"));
+				products.add(product);
+			}
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return products;
+	}
+	
+	@Override
+	public List<ProductVO> buyProcessList() { // 구매중인 물품 리스트 조회
+		List<ProductVO> products = new ArrayList<ProductVO>();
+		ProductVO product = new ProductVO();
+		
+		String sql = "select PRODUCT_ID ,u.USER_ID , PRODUCT_TITLE, PRICE,  STATUS\r\n"
+				+ "			FROM PRODUCTS P JOIN USERS u\r\n"
+				+ "				ON p.USER_ID = u.USER_ID\r\n"
+				+ "			WHERE CUSTOMER_NAME = ? and status = '거래중'\r\n"
+				+ "			ORDER BY P.PRODUCT_ID ASC";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, User.loginUserId);
+			rs = psmt.executeQuery();
+
+			
+			while (rs.next()) {
+				product = new ProductVO();
+				product.setProductId(rs.getInt("PRODUCT_ID"));
+				product.setUserId(rs.getString("USER_ID"));
+				product.setProductTitle(rs.getString("PRODUCT_TITLE"));
+				product.setProductPrice(rs.getInt("PRICE"));
+				product.setStatus(rs.getString("STATUS"));
+				products.add(product);
+			}
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return products;
+	}
+	
 
 	@Override
 	public ProductVO selectProduct(ProductVO product) {
-		
-		String sql = "SELECT PRODUCT_ID, PRODUCT_TITLE, PRODUCT_CATEGORY, PRICE, PRODUCT_DETAIL, u.USER_ID, status \r\n"
+		ProductVO vo = new ProductVO();
+		String sql = "SELECT PRODUCT_ID, PRODUCT_TITLE, PRODUCT_CATEGORY, PRICE, PRODUCT_DETAIL, u.USER_ID, status, customer_name \r\n"
 				+ "FROM PRODUCTS p JOIN USERS u \r\n"
 				+ "ON p.USER_ID = u.USER_ID\r\n"
 				+ "WHERE PRODUCT_ID = ?" ;
@@ -116,6 +225,7 @@ public class ProductServiceImpl implements ProductService {
 				vo.setProductDetail(rs.getString("PRODUCT_DETAIL"));
 				vo.setUserId(rs.getString("USER_ID"));
 				vo.setStatus(rs.getString("STATUS"));
+				vo.setCustomerName(rs.getString("CUSTOMER_NAME"));
 			}
 			
 			
@@ -125,6 +235,8 @@ public class ProductServiceImpl implements ProductService {
 
 		return vo;
 	}
+	
+
 	
 	
 
@@ -173,11 +285,12 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int deleteProduct(ProductVO product) {
 		int n = 0;
-		String sql = "DELETE FROM PRODUCTS WHERE PRODUCTID = ?";
+		String sql = "DELETE FROM PRODUCTS WHERE PRODUCT_ID = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, product.getProductId());
 			
-			psmt.setString(1, sql);
+			n = psmt.executeUpdate();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -186,7 +299,7 @@ public class ProductServiceImpl implements ProductService {
 		return n;
 	}
 //	private void productIdUpdate(int id) { // 블랙리스트 추가하기전 반품처리 횟수 지정할때 사용  => 5회 반품시 블랙리스트 등록
-//		String sql = "UPDATE NOTICE SET PRODUCT_ID = PRODUCT_ID + 1 WHERE ID = ?";
+//		String sql = "UPDATE NOTICE SET PRODUCT_ID = PRODUCT_ID + 1 WHERE User_ID = ?";
 //		
 //		try {
 //			psmt = conn.prepareStatement(sql);
@@ -213,6 +326,58 @@ public class ProductServiceImpl implements ProductService {
 			e.printStackTrace();
 		}
 		return n;
+	}
+	
+	@Override
+	public int purchaseConfirm(ProductVO product) {
+		int n = 0;
+		String sql = "UPDATE PRODUCTS SET STATUS = '거래완료' WHERE PRODUCT_ID = ?";
+		
+		try {
+			psmt = conn.prepareStatement(sql);
+			
+			psmt.setInt(1, product.getProductId());
+			
+			n = psmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return n;
+	}
+	
+	
+
+	@Override
+	public ProductVO sellProcess(ProductVO product) {
+		ProductVO vo = new ProductVO();
+		String sql = "SELECT PRODUCT_ID, u.user_id,phone_number,u.address,PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, CUSTOMER_NAME , PRODUCT_DETAIL, status\r\n"
+				+ "				FROM products p JOIN users u\r\n"
+				+ "				ON p.user_id = u.user_id\r\n"
+				+ "                where u.user_id = ? and status = '거래중'\r\n"
+				+ "				order by p.product_id asc";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, product.getProductId());
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				vo = new ProductVO();
+				vo.setProductId(rs.getInt("PRODUCT_ID"));
+				vo.setProductTitle(rs.getString("PRODUCT_TITLE"));
+				vo.setProductPrice(rs.getInt("PRICE"));
+				vo.setProductCategory(rs.getString("PRODUCT_CATEGORY"));
+				vo.setProductDetail(rs.getString("PRODUCT_DETAIL"));
+				vo.setUserId(rs.getString("USER_ID"));
+				vo.setStatus(rs.getString("STATUS"));
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return vo;
 	}
 	
 	

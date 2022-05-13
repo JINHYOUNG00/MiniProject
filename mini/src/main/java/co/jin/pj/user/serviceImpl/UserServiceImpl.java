@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import co.jin.pj.dao.DataSource;
+import co.jin.pj.product.service.ProductVO;
+import co.jin.pj.user.User;
 import co.jin.pj.user.service.UserService;
 import co.jin.pj.user.service.UserVO;
 
@@ -60,7 +62,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int insertUser(UserVO user) { // 회원가입
 		int n = 0;
-		String sql = "INSERT INTO USERS VALUES(?,?,?,?,?,?)";
+		String sql = "INSERT INTO USERS VALUES(?,?,?,?,?,?,?)";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, user.getUserId());
@@ -69,6 +71,7 @@ public class UserServiceImpl implements UserService {
 			psmt.setString(4, user.getUserAddress());
 			psmt.setString(5, user.getUserNickname());
 			psmt.setString(6, user.getBlackList());
+			psmt.setInt(7, user.getRefund());
 			n = psmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -217,6 +220,31 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		} 
 		return vo;
+	}
+	
+	@Override
+	public int refundUpdate(UserVO user) {
+		int n = 0;
+		String sql = "UPDATE USERS SET refund = REFUND +1 WHERE USER_ID = ?";
+		String sql2 = "UPDATE PRODUCTS SET STATUS = '거래가능' where product_id =?";
+		String sql3 = "UPDATE PRODUCTS SET CUSTOMER_NAME = NULL WHERE PRODUCT_ID = ?";
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1,user.getUserId());
+			n = psmt.executeUpdate();
+			psmt = conn.prepareStatement(sql2);
+			psmt.setInt(1, user.getRefund());
+			n = psmt.executeUpdate();
+			psmt = conn.prepareStatement(sql3);
+			psmt.setInt(1, user.getRefund());
+			n = psmt.executeUpdate();
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return n;
 	}
 
 

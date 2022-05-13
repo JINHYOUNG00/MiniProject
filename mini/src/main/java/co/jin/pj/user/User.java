@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import co.jin.pj.main.Menu;
+import co.jin.pj.product.service.ProductService;
+import co.jin.pj.product.serviceImpl.ProductServiceImpl;
 import co.jin.pj.user.service.UserService;
 import co.jin.pj.user.service.UserVO;
 import co.jin.pj.user.serviceImpl.UserServiceImpl;
@@ -12,6 +14,7 @@ import co.jin.pj.user.serviceImpl.UserServiceImpl;
 public class User {
 	static Scanner scn = new Scanner(System.in);
 	static UserService service = new UserServiceImpl();
+	static ProductService service2 = new ProductServiceImpl();
 	static List<UserVO> list = new ArrayList<UserVO>();
 
 	public static String loginUserId;
@@ -76,6 +79,7 @@ public class User {
 		vo.setUserNickname(scn.nextLine());
 //		String userNickname = scn.nextLine();
 		vo.setBlackList("N");
+		vo.setRefund(0);
 
 		service.insertUser(vo);
 

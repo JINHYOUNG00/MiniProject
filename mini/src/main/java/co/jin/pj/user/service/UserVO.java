@@ -11,6 +11,7 @@ public class UserVO {
 	private String userAddress;
 	private String userNickname;
 	private String blackList;
+	private int refund;
 	
 	
 }
