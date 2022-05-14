@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import co.jin.pj.main.Menu;
 import co.jin.pj.product.service.ProductService;
+import co.jin.pj.product.service.ProductVO;
 import co.jin.pj.product.serviceImpl.ProductServiceImpl;
 import co.jin.pj.user.service.UserService;
 import co.jin.pj.user.service.UserVO;
@@ -22,7 +23,8 @@ public class User {
 	public static void login() {
 		UserVO vo = new UserVO();
 		clearScreen();
-		System.out.println("로 그 인 =============================================================================================================================================================");
+		System.out.println(
+				"로 그 인 =============================================================================================================================================================");
 		System.out.print("ID >>");
 		String userId = scn.nextLine();
 		vo.setUserId(userId);
@@ -45,7 +47,8 @@ public class User {
 	public static void userInsert() { /// 가입
 		UserVO vo = new UserVO();
 		clearScreen();
-		System.out.println("회 원 가 입 =============================================================================================================================================================");
+		System.out.println(
+				"회 원 가 입 =============================================================================================================================================================");
 		System.out.print("ID >>");
 		while (true) {
 			String userId = scn.nextLine();
@@ -86,28 +89,38 @@ public class User {
 	}
 
 	public static void userDelete() { /// 회원 탈퇴
-		System.out.println("회 원 탈 퇴 =============================================================================================================================================================");
+		System.out.println(
+				"회 원 탈 퇴 =============================================================================================================================================================");
 		UserVO vo = new UserVO();
+		ProductVO vo2 = new ProductVO();
+
 		String userId = User.loginUserId;
 		vo.setUserId(userId);
-
+		vo2.setUserId(userId);
 		System.out.print("비밀번호 >>");
 		String userPassword = scn.nextLine();
 
-		if (userPassword.equals(service.selectUser2(vo).getUserPassword())) {
-			vo.setUserPassword(userPassword);
-			System.out.println(User.loginUserId + " 회원 탈퇴 되었습니다.");
-			service.deleteUser(vo);
-			Menu.main();
-		} else if (!userPassword.equals(service.selectUser2(vo).getUserPassword())) {
-			System.out.println("비밀번호가 틀렸습니다.");
+		if (service2.selectProduct2(vo2).getStatus() != null && service2.selectProduct2(vo2).getStatus().equals("거래가능")) {
+			System.out.println("목록에 올려놓은 물품이 존재합니다. 탈퇴하려면 삭제 이후 이용해주세요.");
+		} else if (service2.selectProduct2(vo2).getStatus() != null && service2.selectProduct2(vo2).getStatus().equals("거래중")) {
+			System.out.println("현재 거래중인 물품이 존재합니다.");
+		} else {
+			if (userPassword.equals(service.selectUser2(vo).getUserPassword())) {
+				vo.setUserPassword(userPassword);
+				System.out.println(User.loginUserId + " 회원 탈퇴 되었습니다.");
+				service.deleteUser(vo);
+				Menu.main();
+			} else if (!userPassword.equals(service.selectUser2(vo).getUserPassword())) {
+				System.out.println("비밀번호가 틀렸습니다.");
+			}
 		}
 
 	}
 
 	public static void blackList() {
 		clearScreen();
-		System.out.println("블 랙 리 스 트 명 단 =============================================================================================================================================================");
+		System.out.println(
+				"블 랙 리 스 트 명 단 =============================================================================================================================================================");
 		list = service.blackListSelect();
 		for (UserVO vo : list) {
 			System.out.printf("ID : %s  닉네임 : %s \n", vo.getUserId(), vo.getUserNickname());
@@ -123,7 +136,8 @@ public class User {
 
 	public static void selectUser() {
 		clearScreen();
-		System.out.println("회 원 정 보 조 회 =============================================================================================================================================================");
+		System.out.println(
+				"회 원 정 보 조 회 =============================================================================================================================================================");
 		UserVO vo = new UserVO();
 		UserVO vo2 = new UserVO();
 		String id = User.loginUserId;
@@ -149,7 +163,8 @@ public class User {
 	public static void userUpdate() { /// 회원정보 수정
 		UserVO vo = new UserVO();
 		clearScreen();
-		System.out.println("회 원 정 보 수 정 =============================================================================================================================================================");
+		System.out.println(
+				"회 원 정 보 수 정 =============================================================================================================================================================");
 		System.out.println("현재 ID는 '" + User.loginUserId + "' 입니다.");
 		String userId = User.loginUserId;
 		vo.setUserId(userId);

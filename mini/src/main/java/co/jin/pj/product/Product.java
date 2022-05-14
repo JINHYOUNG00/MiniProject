@@ -57,8 +57,8 @@ public class Product {
 //		selectProduct();
 		Menu.productMenu();
 	}
-	
-	public static void productSelectList3() {    // 내가 구입가능한 물품목록조회
+
+	public static void productSelectList3() { // 내가 구입가능한 물품목록조회
 		User.clearScreen();
 		System.out.println(
 				"물 품 명 단 / 검 색 =============================================================================================================================================================");
@@ -279,27 +279,31 @@ public class Product {
 		System.out.print("조회할 글번호 (0.취소)>>");
 		int input = scn.nextInt();
 		scn.nextLine();
-		if (input != 0) {
-			selectProduct = input;
-			vo.setProductId(input);
-			vo = service.selectProduct(vo);
-			User.clearScreen();
-			System.out.println(
-					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-			System.out.printf("%3d|%30s|품목: %4s|%5d원|글쓴이: %5s|%s \n", vo.getProductId(), vo.getProductTitle(),
-					vo.getProductCategory(), vo.getProductPrice(), vo.getUserId(), vo.getStatus());
-			System.out.println(
-					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-			System.out.printf("상세내용 \n %s \n", vo.getProductDetail());
-			System.out.println(
-					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
-			buy();
-			// 구입 의사 질문 => y => 결재진행 => 거래중으로 표기 및 해당 물건 customer_name에 현재 구매자 user_id 입력
-			// n => 뒤로가기
-		} else if (input == 0) {
-			User.clearScreen();
-			productSelectList();
+		vo.setProductId(input);
+		selectProduct = input;
+		if (service.selectProduct(vo).getProductCategory() != null) {
+			if (input != 0) {
+				vo = service.selectProduct(vo);
+				User.clearScreen();
+				System.out.println(
+						"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				System.out.printf("%3d|%30s|품목: %4s|%5d원|글쓴이: %5s|%s \n", vo.getProductId(), vo.getProductTitle(),
+						vo.getProductCategory(), vo.getProductPrice(), vo.getUserId(), vo.getStatus());
+				System.out.println(
+						"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				System.out.printf("상세내용 \n %s \n", vo.getProductDetail());
+				System.out.println(
+						"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+				buy();
+				// 구입 의사 질문 => y => 결재진행 => 거래중으로 표기 및 해당 물건 customer_name에 현재 구매자 user_id 입력
+				// n => 뒤로가기
+			} else if (input == 0) {
+				User.clearScreen();
+				productSelectList();
+			}
+		} else {
+			System.out.println("존재하지않는 글입니다.");
 		}
 	}
 
@@ -393,18 +397,19 @@ public class Product {
 		int input = scn.nextInt();
 		scn.nextLine();
 		vo.setProductId(input);
-		String sellerId = service.selectProduct(vo).getUserId();
-		vo2.setUserId(sellerId);
-		vo2.setRefund(input);
-		service2.refundUpdate(vo2);
-		System.out.println("환불되었습니다.");
-		if (service2.selectUser2(vo2).getRefund() == 10) {
-			service2.addBlackList(vo2);
+		if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
+			String sellerId = service.selectProduct(vo).getUserId();
+			vo2.setUserId(sellerId);
+			vo2.setRefund(input);
+			service2.refundUpdate(vo2);
+			System.out.println("환불되었습니다.");
+			if (service2.selectUser2(vo2).getRefund() >= 3) {
+				service2.addBlackList(vo2);
+			}
+		} else {
+			System.out.println("구입한 물품이 아닙니다.");
 		}
-		
-		
-		
-		
+
 	}
 
 }

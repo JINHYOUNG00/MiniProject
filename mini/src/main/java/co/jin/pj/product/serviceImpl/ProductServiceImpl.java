@@ -236,6 +236,32 @@ public class ProductServiceImpl implements ProductService {
 		return vo;
 	}
 	
+	@Override
+	public ProductVO selectProduct2(ProductVO product) {
+		ProductVO vo = new ProductVO();
+		String sql = "select product_id, status \r\n"
+				+ "from products\r\n"
+				+ "where user_id = ?" ;
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, product.getUserId());
+			
+			rs = psmt.executeQuery();
+			
+			if(rs.next()) {
+				vo = new ProductVO();
+				vo.setProductId(rs.getInt("PRODUCT_ID"));
+				vo.setStatus(rs.getString("STATUS"));
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return vo;
+	}	
+	
 
 	
 	

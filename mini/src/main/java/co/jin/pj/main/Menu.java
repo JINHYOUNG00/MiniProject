@@ -34,13 +34,10 @@ public class Menu {
 				if (menu2 == 1) {
 					User.login();
 				} else if (menu2 == 2) {
-					System.out.println(User.loginUserId);
 					User.userInsert();
 				} else if (menu2 == 3) {
-					System.out.println(User.loginUserId);
 					User.blackList();
 				} else if (menu2 == 9) {
-					System.out.println(User.loginUserId);
 					System.out.println("프로그램을 종료합니다.");
 					System.exit(0);
 					break;

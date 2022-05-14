@@ -17,5 +17,6 @@ public interface ProductService {
 	List<ProductVO> selectListProduct2();
 	int purchaseConfirm(ProductVO product);
 	List<ProductVO> selectListProduct3();
+	ProductVO selectProduct2(ProductVO product);
 
 }
