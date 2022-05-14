@@ -292,8 +292,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int updateProduct(ProductVO product) {
 		int n = 0;
-		String sql = "UPDATE PRODUCTS SET TITLE = ?, "
-				+ "PRICE = ?, CATEGORY = ?, DETAIL = ?";
+		String sql = "UPDATE PRODUCTS SET PRODUCT_TITLE = ?, PRICE = ?, PRODUCT_CATEGORY = ?, PRODUCT_DETAIL = ? WHERE PRODUCT_ID = ?";
 		
 		try {
 			psmt = conn.prepareStatement(sql);
@@ -301,6 +300,10 @@ public class ProductServiceImpl implements ProductService {
 			psmt.setInt(2, product.getProductPrice());
 			psmt.setString(3, product.getProductCategory());
 			psmt.setString(4, product.getProductDetail());
+			psmt.setInt(5, product.getProductId());
+			
+			n = psmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -360,7 +363,7 @@ public class ProductServiceImpl implements ProductService {
 		String sql = "UPDATE PRODUCTS SET STATUS = '거래완료' WHERE PRODUCT_ID = ?";
 		
 		try {
-			psmt = conn.prepareStatement(sql);
+			psmt = conn.prepareStatement(sql); 
 			
 			psmt.setInt(1, product.getProductId());
 			
