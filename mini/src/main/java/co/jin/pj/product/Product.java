@@ -1,6 +1,7 @@
 package co.jin.pj.product;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,7 +24,7 @@ public class Product {
 	public static int selectProduct;
 
 	public static void productSelectList() {
-		User.clearScreen();
+		
 		System.out.println(
 				"물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 		list = service.selectListProduct();
@@ -93,34 +94,39 @@ public class Product {
 			Menu.loginMenu();
 		} else {
 			System.out.print("가격 >>");
+			try {
 			int price = scn.nextInt();
-			scn.nextLine();
-			if (price == 0) {
-				User.clearScreen();
-				Menu.loginMenu();
-			} else {
-				System.out.print("물품 품목 >>");
-				String category = scn.nextLine();
-				if (category.equals("0")) {
+
+				scn.nextLine();
+				if (price == 0) {
 					User.clearScreen();
 					Menu.loginMenu();
 				} else {
-					System.out.print("물품 상세사항 >>");
-					String detail = scn.nextLine();
-					if (detail.equals("0")) {
+					System.out.print("물품 품목 >>");
+					String category = scn.nextLine();
+					if (category.equals("0")) {
 						User.clearScreen();
 						Menu.loginMenu();
 					} else {
-						vo.setProductTitle(title);
-						vo.setProductPrice(price);
-						vo.setProductCategory(category);
-						vo.setProductDetail(detail);
-						vo.setCustomerName(null);
-						vo.setStatus("거래가능");
+						System.out.print("물품 상세사항 >>");
+						String detail = scn.nextLine();
+						if (detail.equals("0")) {
+							User.clearScreen();
+							Menu.loginMenu();
+						} else {
+							vo.setProductTitle(title);
+							vo.setProductPrice(price);
+							vo.setProductCategory(category);
+							vo.setProductDetail(detail);
+							vo.setCustomerName(null);
+							vo.setStatus("거래가능");
 
-						service.insertProduct(vo); // productid 없는 상태의 product >> db (시퀀스 붙어서 )
+							service.insertProduct(vo); // productid 없는 상태의 product >> db (시퀀스 붙어서 )
+						}
 					}
 				}
+			} catch (InputMismatchException e) {
+				System.out.println("가격은 숫자만 입력해주세요");
 			}
 		}
 	}
@@ -151,7 +157,7 @@ public class Product {
 						User.clearScreen();
 						productSelectList();
 					} else {
-
+						try {	
 						System.out.print("수정할 가격 >>");
 						int price = scn.nextInt();
 						scn.nextLine();
@@ -178,6 +184,10 @@ public class Product {
 								productSelectList();
 								System.out.println("수정완료");
 							}
+						}
+						} catch (InputMismatchException e) {
+							System.out.println("가격은 숫자만 입력해주세요");
+							productSelectList();
 						}
 					}
 				} else {
@@ -298,7 +308,9 @@ public class Product {
 		String sellerId = service.selectProduct(vo).getUserId();
 		vo2.setUserId(sellerId);
 		if (input != 0) {
-			if (service.selectProduct(vo).getProductCategory() != null && (service2.selectUser2(vo2).getBlackList() != null && service2.selectUser2(vo2).getBlackList().equals("N"))) {
+			if (service.selectProduct(vo).getProductCategory() != null
+					&& (service2.selectUser2(vo2).getBlackList() != null
+							&& service2.selectUser2(vo2).getBlackList().equals("N"))) {
 				vo = service.selectProduct(vo);
 				User.clearScreen();
 				System.out.println(
@@ -383,14 +395,17 @@ public class Product {
 					vo.setProductPrice(price);
 					vo2.setUserId(User.loginUserId);
 					if (service2.selectUser2(vo2).getPoint() >= price) {
-						
-					service.buyProduct(vo);
-					System.out.println("구입신청되었습니다. \n#####  판매자 정보는 회원메뉴 5번 구매중인물품조회에 있습니다.  ######");
+
+						service.buyProduct(vo);
 					
+						System.out.println("구입신청되었습니다. \n#####  판매자 정보는 회원메뉴 5번 구매중인물품조회에 있습니다.  ######");
+
 					} else {
+						
 						System.out.println("금액이 부족합니다.");
 					}
 				} else if (!service.selectProduct(vo).getStatus().equals("거래가능")) {
+					productSelectList();
 					System.out.println("판매중인 물품이 아닙니다.");
 				}
 			}
@@ -413,7 +428,7 @@ public class Product {
 		if (service2.selectUser(vo2).getBlackList() != null && service2.selectUser(vo2).getBlackList().equals("Y")) {
 			System.out.println("판매자가 블랙리스트에 지정되어 구매확정할 수 없습니다. 구매 취소해주세요.");
 		} else {
-			
+
 			if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
 				vo.setUserId(sellerId);
 				vo.setProductPrice(price);
@@ -434,7 +449,7 @@ public class Product {
 		vo.setProductId(input);
 		int price = service.selectProduct(vo).getProductPrice();
 		vo2.setPoint(price);
-		
+
 		vo2.setPoint(input);
 		if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
 			String sellerId = service.selectProduct(vo).getUserId();
