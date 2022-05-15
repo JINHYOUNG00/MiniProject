@@ -328,7 +328,7 @@ public class ProductServiceImpl implements ProductService {
 
 		return n;
 	}
-//	private void productIdUpdate(int id) { // 블랙리스트 추가하기전 반품처리 횟수 지정할때 사용  => 5회 반품시 블랙리스트 등록
+//	private void productIdUpdate(int id) { // 블랙리스트 추가하기전 반품처리 횟수 지정할때 사용  => 5회 반품시 블랙리스트 등록 // 다른방법으로 처리완료
 //		String sql = "UPDATE NOTICE SET PRODUCT_ID = PRODUCT_ID + 1 WHERE User_ID = ?";
 //		
 //		try {
@@ -344,12 +344,22 @@ public class ProductServiceImpl implements ProductService {
 	public int buyProduct(ProductVO product) {
 		int n = 0;
 		String sql = "UPDATE PRODUCTS SET STATUS = '거래중', customer_name = ? WHERE PRODUCT_ID = ?";
-		
+		String sql2 = "update users set point = point - ? where user_id = ?";
+		String sql3 = "update users set point = point + ? where user_id = 'root'";
+				
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, User.loginUserId);
 			psmt.setInt(2, product.getProductId());
+			n = psmt.executeUpdate();
 			
+			psmt = conn.prepareStatement(sql2);
+			psmt.setInt(1, product.getProductPrice());   // price 받아와야함
+			psmt.setString(2, User.loginUserId);
+			n = psmt.executeUpdate();
+			
+			psmt = conn.prepareStatement(sql3);
+			psmt.setInt(1, product.getProductPrice());  // price 받아와야함
 			n = psmt.executeUpdate();
 			
 		} catch (SQLException e) {
@@ -362,12 +372,21 @@ public class ProductServiceImpl implements ProductService {
 	public int purchaseConfirm(ProductVO product) {
 		int n = 0;
 		String sql = "UPDATE PRODUCTS SET STATUS = '거래완료' WHERE PRODUCT_ID = ?";
+		String sql2 = "update users set point = point + ? where user_id = ?";
+		String sql3 = "update users set point = point - ? where user_id = 'root'";
 		
 		try {
 			psmt = conn.prepareStatement(sql); 
-			
 			psmt.setInt(1, product.getProductId());
+			n = psmt.executeUpdate();
 			
+			psmt = conn.prepareStatement(sql2);
+			psmt.setInt(1, product.getProductPrice());
+			psmt.setString(2, product.getUserId());
+			n = psmt.executeUpdate();
+
+			psmt = conn.prepareStatement(sql3);
+			psmt.setInt(1, product.getProductPrice());
 			n = psmt.executeUpdate();
 			
 		} catch (SQLException e) {

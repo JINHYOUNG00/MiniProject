@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int insertUser(UserVO user) { // 회원가입
 		int n = 0;
-		String sql = "INSERT INTO USERS VALUES(?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO USERS VALUES(?,?,?,?,?,?,?,?)";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, user.getUserId());
@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService {
 			psmt.setString(5, user.getUserNickname());
 			psmt.setString(6, user.getBlackList());
 			psmt.setInt(7, user.getRefund());
+			psmt.setInt(8, user.getPoint());
 			n = psmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -201,7 +202,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserVO selectUser2(UserVO user) {
 		UserVO vo = new UserVO();
-		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME, BLACK_LIST, USER_PASSWORD, refund FROM USERS WHERE USER_ID = ?";
+		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME, BLACK_LIST, USER_PASSWORD, REFUND, POINT FROM USERS WHERE USER_ID = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, user.getUserId());
@@ -215,7 +216,8 @@ public class UserServiceImpl implements UserService {
 				vo.setUserNickname(rs.getString("USER_NICKNAME"));
 				vo.setBlackList(rs.getString("BLACK_LIST"));
 				vo.setUserPassword(rs.getString("USER_PASSWORD"));
-				vo.setRefund(rs.getInt("refund"));
+				vo.setRefund(rs.getInt("REFUND"));
+				vo.setPoint(rs.getInt("POINT"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -227,19 +229,26 @@ public class UserServiceImpl implements UserService {
 	public int refundUpdate(UserVO user) {
 		int n = 0;
 		String sql = "UPDATE USERS SET refund = REFUND +1 WHERE USER_ID = ?";
-		String sql2 = "UPDATE PRODUCTS SET STATUS = '거래가능' where product_id =?";
-		String sql3 = "UPDATE PRODUCTS SET CUSTOMER_NAME = NULL WHERE PRODUCT_ID = ?";
+		String sql2 = "UPDATE PRODUCTS SET STATUS = '거래가능',CUSTOMER_NAME = NULL WHERE PRODUCT_ID =?";
+		String sql3 = "update users set point = point + ? where user_id = ?";
+		String sql4 = "update users set point = point - ? where user_id = 'root'";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1,user.getUserId());
 			n = psmt.executeUpdate();
+			
 			psmt = conn.prepareStatement(sql2);
 			psmt.setInt(1, user.getRefund());
 			n = psmt.executeUpdate();
+			
 			psmt = conn.prepareStatement(sql3);
-			psmt.setInt(1, user.getRefund());
+			psmt.setInt(1, user.getPoint());
+			psmt.setString(2, User.loginUserId);
 			n = psmt.executeUpdate();
 			
+			psmt = conn.prepareStatement(sql4);
+			psmt.setInt(1, user.getPoint());
+			n = psmt.executeUpdate();
 			
 			
 		} catch (SQLException e) {

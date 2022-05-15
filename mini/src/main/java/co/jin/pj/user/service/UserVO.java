@@ -12,6 +12,7 @@ public class UserVO {
 	private String userNickname;
 	private String blackList;
 	private int refund;
+	private int point;
 	
 	
 }

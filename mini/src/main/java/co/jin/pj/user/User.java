@@ -83,6 +83,7 @@ public class User {
 //		String userNickname = scn.nextLine();
 		vo.setBlackList("N");
 		vo.setRefund(0);
+		vo.setPoint(10000);
 
 		service.insertUser(vo);
 

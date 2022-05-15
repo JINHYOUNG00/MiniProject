@@ -364,7 +364,8 @@ public class Product {
 
 	public static void buy() {
 		ProductVO vo = new ProductVO();
-		System.out.print(selectProduct + "번 물품을 구입하시겠습니까?(y/n) >>");
+		UserVO vo2 = new UserVO();
+		System.out.print(selectProduct + "번 물품을 구입신청하시겠습니까?(y/n) >>");
 
 		vo.setProductId(selectProduct);
 
@@ -378,8 +379,17 @@ public class Product {
 				int input2 = selectProduct;
 				if (service.selectProduct(vo).getStatus().equals("거래가능")) {
 					vo.setProductId(input2);
+					int price = service.selectProduct(vo).getProductPrice();
+					vo.setProductPrice(price);
+					vo2.setUserId(User.loginUserId);
+					if (service2.selectUser2(vo2).getPoint() >= price) {
+						
 					service.buyProduct(vo);
 					System.out.println("구입신청되었습니다. \n#####  판매자 정보는 회원메뉴 5번 구매중인물품조회에 있습니다.  ######");
+					
+					} else {
+						System.out.println("금액이 부족합니다.");
+					}
 				} else if (!service.selectProduct(vo).getStatus().equals("거래가능")) {
 					System.out.println("판매중인 물품이 아닙니다.");
 				}
@@ -397,14 +407,16 @@ public class Product {
 		int input = scn.nextInt();
 		scn.nextLine();
 		vo.setProductId(input);
-
+		int price = service.selectProduct(vo).getProductPrice();
 		String sellerId = service.selectProduct(vo).getUserId();
 		vo2.setUserId(sellerId);
-		if (service2.selectUser(vo2).getBlackList().equals("Y")) {
+		if (service2.selectUser(vo2).getBlackList() != null && service2.selectUser(vo2).getBlackList().equals("Y")) {
 			System.out.println("판매자가 블랙리스트에 지정되어 구매확정할 수 없습니다. 구매 취소해주세요.");
 		} else {
-
+			
 			if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
+				vo.setUserId(sellerId);
+				vo.setProductPrice(price);
 				service.purchaseConfirm(vo);
 				System.out.println("구매 확정되었습니다.");
 			} else {
@@ -420,6 +432,10 @@ public class Product {
 		int input = scn.nextInt();
 		scn.nextLine();
 		vo.setProductId(input);
+		int price = service.selectProduct(vo).getProductPrice();
+		vo2.setPoint(price);
+		
+		vo2.setPoint(input);
 		if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
 			String sellerId = service.selectProduct(vo).getUserId();
 			vo2.setUserId(sellerId);
