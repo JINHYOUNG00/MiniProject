@@ -44,7 +44,7 @@ public class Product {
 		User.clearScreen();
 		System.out.println(
 				"물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				list = service.selectListProduct2();
+		list = service.selectListProduct2();
 		for (ProductVO vo : list) {
 
 			System.out.printf("글번호: %3d  |%50s  |품목: %10s  |%10d원|글쓴이: %10s|%s \n", vo.getProductId(),
@@ -186,7 +186,7 @@ public class Product {
 			}
 		} else if (service.selectProduct(vo).getStatus().equals("거래중")) {
 			System.out.println("거래중인 물품입니다.");
-			
+
 		} else if (service.selectProduct(vo).getStatus().equals("거래완료")) {
 			System.out.println("거래 완료된 물품입니다.");
 		}
@@ -288,14 +288,17 @@ public class Product {
 
 	public static void selectProduct() {
 		ProductVO vo = new ProductVO();
+		UserVO vo2 = new UserVO();
 		System.out.print("조회할 글번호 (0.취소)>>");
 		int input = scn.nextInt();
 		scn.nextLine();
 
 		vo.setProductId(input);
 		selectProduct = input;
-		if (service.selectProduct(vo).getProductCategory() != null) {
-			if (input != 0) {
+		String sellerId = service.selectProduct(vo).getUserId();
+		vo2.setUserId(sellerId);
+		if (input != 0) {
+			if (service.selectProduct(vo).getProductCategory() != null && (service2.selectUser2(vo2).getBlackList() != null && service2.selectUser2(vo2).getBlackList().equals("N"))) {
 				vo = service.selectProduct(vo);
 				User.clearScreen();
 				System.out.println(
@@ -310,12 +313,12 @@ public class Product {
 				buy();
 				// 구입 의사 질문 => y => 결재진행 => 거래중으로 표기 및 해당 물건 customer_name에 현재 구매자 user_id 입력
 				// n => 뒤로가기
-			} else if (input == 0) {
-				User.clearScreen();
-				productSelectList();
+			} else {
+				System.out.println("존재하지않는 글입니다.");
 			}
-		} else {
-			System.out.println("존재하지않는 글입니다.");
+		} else if (input == 0) {
+			User.clearScreen();
+			productSelectList();
 		}
 	}
 
@@ -329,7 +332,7 @@ public class Product {
 //		
 		System.out.println(
 				"판 매 요 청 물 품 명 단 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-		
+
 		list = service.sellProcessList();
 		for (ProductVO vo : list) {
 			System.out.printf("글번호: %3d  |구매자ID: %6s  |글제목: %50s  |%7d원|%s \n", vo.getProductId(), vo.getCustomerName(),
@@ -346,7 +349,7 @@ public class Product {
 		User.clearScreen();
 		System.out.println(
 				"구 매 요 청 물 품 명 단 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-		
+
 		list = service.buyProcessList();
 		for (ProductVO vo : list) {
 			System.out.printf("글번호: %3d  |판매자ID: %6s  |글제목: %50s  |%7d원|%s \n", vo.getProductId(), vo.getUserId(),
@@ -389,17 +392,25 @@ public class Product {
 
 	public static void buyconfirm() {
 		ProductVO vo = new ProductVO();
+		UserVO vo2 = new UserVO();
 		System.out.print("구매 확정할 글번호 입력 >>");
 		int input = scn.nextInt();
 		scn.nextLine();
 		vo.setProductId(input);
-		if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
-			service.purchaseConfirm(vo);
-			System.out.println("구매 확정되었습니다.");
-		} else {
-			System.out.println("해당사항 없습니다.");
-		}
 
+		String sellerId = service.selectProduct(vo).getUserId();
+		vo2.setUserId(sellerId);
+		if (service2.selectUser(vo2).getBlackList().equals("Y")) {
+			System.out.println("판매자가 블랙리스트에 지정되어 구매확정할 수 없습니다. 구매 취소해주세요.");
+		} else {
+
+			if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
+				service.purchaseConfirm(vo);
+				System.out.println("구매 확정되었습니다.");
+			} else {
+				System.out.println("해당사항 없습니다.");
+			}
+		}
 	}
 
 	public static void refund() {
@@ -415,7 +426,7 @@ public class Product {
 			vo2.setRefund(input);
 			service2.refundUpdate(vo2);
 			System.out.println("환불되었습니다.");
-			if (service2.selectUser2(vo2).getRefund() >= 3) {
+			if (service2.selectUser2(vo2).getRefund() >= 10) {
 				service2.addBlackList(vo2);
 			}
 		} else {

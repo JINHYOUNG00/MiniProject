@@ -201,7 +201,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserVO selectUser2(UserVO user) {
 		UserVO vo = new UserVO();
-		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME, BLACK_LIST, USER_PASSWORD FROM USERS WHERE USER_ID = ?";
+		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME, BLACK_LIST, USER_PASSWORD, refund FROM USERS WHERE USER_ID = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, user.getUserId());
@@ -215,6 +215,7 @@ public class UserServiceImpl implements UserService {
 				vo.setUserNickname(rs.getString("USER_NICKNAME"));
 				vo.setBlackList(rs.getString("BLACK_LIST"));
 				vo.setUserPassword(rs.getString("USER_PASSWORD"));
+				vo.setRefund(rs.getInt("refund"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

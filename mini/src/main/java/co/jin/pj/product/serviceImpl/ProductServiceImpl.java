@@ -27,9 +27,10 @@ public class ProductServiceImpl implements ProductService {
 		List<ProductVO> products = new ArrayList<ProductVO>();
 		ProductVO product;
 		String sql = "SELECT PRODUCT_ID, u.user_id, PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, PRODUCT_DETAIL, status\r\n"
-				+ "FROM products p JOIN users u\r\n"
-				+ "ON p.user_id = u.user_id\r\n"
-				+ "order by p.product_id asc";
+				+ "				FROM products p JOIN users u\r\n"
+				+ "				ON p.user_id = u.user_id\r\n"
+				+ "                where u.black_list = 'N'\r\n"
+				+ "				order by p.product_id asc";
 				/*"SELECT PRODUCT_ID, u.user_id, PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, PRODUCT_DETAIL \r\n"
 				+ "FROM products p JOIN users u\r\n"
 				+ "ON p.user_id = u.user_id";*/
@@ -67,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
 		String sql = "SELECT PRODUCT_ID, u.user_id, PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, PRODUCT_DETAIL, status\r\n"
 				+ "				FROM products p JOIN users u\r\n"
 				+ "				ON p.user_id = u.user_id\r\n"
-				+ "                where not u.user_id = ?\r\n"
+				+ "                where not u.user_id = ? and u.black_list = 'N'\r\n"
 				+ "				order by p.product_id asc";
 				
 		try {
@@ -105,7 +106,7 @@ public class ProductServiceImpl implements ProductService {
 		String sql = "SELECT PRODUCT_ID, u.user_id, PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, PRODUCT_DETAIL, status\r\n"
 				+ "								FROM products p JOIN users u\r\n"
 				+ "								ON p.user_id = u.user_id\r\n"
-				+ "				                where not u.user_id = ? and status = '거래가능'\r\n"
+				+ "				                where not u.user_id = ? and status = '거래가능' and u.black_list = 'N'\r\n"
 				+ "								order by p.product_id asc";
 				
 		try {
