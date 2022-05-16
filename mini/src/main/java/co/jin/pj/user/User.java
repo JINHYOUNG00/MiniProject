@@ -101,9 +101,11 @@ public class User {
 		System.out.print("비밀번호 >>");
 		String userPassword = scn.nextLine();
 
-		if (service2.selectProduct2(vo2).getStatus() != null && service2.selectProduct2(vo2).getStatus().equals("거래가능")) {
+		if (service2.selectProduct2(vo2).getStatus() != null
+				&& service2.selectProduct2(vo2).getStatus().equals("거래가능")) {
 			System.out.println("목록에 올려놓은 물품이 존재합니다. 탈퇴하려면 삭제 이후 이용해주세요.");
-		} else if (service2.selectProduct2(vo2).getStatus() != null && service2.selectProduct2(vo2).getStatus().equals("거래중")) {
+		} else if (service2.selectProduct2(vo2).getStatus() != null
+				&& service2.selectProduct2(vo2).getStatus().equals("거래중")) {
 			System.out.println("현재 거래중인 물품이 존재합니다.");
 		} else {
 			if (userPassword.equals(service.selectUser2(vo).getUserPassword())) {
@@ -152,10 +154,15 @@ public class User {
 			vo.setUserId(id);
 			vo.setUserPassword(password);
 			vo = service.selectUser(vo);
-
-			System.out.printf("ID : %s  연락처 : %s  주소 : %s  닉네임 : %s \n", vo.getUserId(), vo.getUserPhone(),
-					vo.getUserAddress(), vo.getUserNickname());
-			System.out.println("남은 돈: " + vo.getPoint());
+			System.out
+					.println("┌─────────────────────────────────────────────────────────────────────────────────────┐");
+			System.out.printf("│ ID │ %s  │ 연락처 │ %s  │주소 │ %s  │ 닉네임 │ %s          			   	      │\n",
+					vo.getUserId(), vo.getUserPhone(), vo.getUserAddress(), vo.getUserNickname());
+			System.out
+					.println("├─────────────────────────────────────────────────────────────────────────────────────┤");
+			System.out.println("│ 보유 금액 │ " + vo.getPoint() + "원								      │");
+			System.out
+					.println("└─────────────────────────────────────────────────────────────────────────────────────┘");
 		} else {
 			System.out.println("ID, 비밀번호가 일치하지 않습니다.");
 		}
@@ -177,7 +184,9 @@ public class User {
 		if (userPassword.equals(service.selectUser2(vo).getUserPassword())) {
 			System.out.print("수정할 비밀번호 >>");
 			String userPassword2 = scn.nextLine();
+
 			vo.setUserPassword2(userPassword2);
+
 			System.out.print("수정할 연락처 >>");
 			String phone = scn.nextLine();
 			vo.setUserPhone(phone);
@@ -185,7 +194,8 @@ public class User {
 			String address = scn.nextLine();
 			vo.setUserAddress(address);
 			System.out.print("수정할 닉네임 >>");
-			vo.setUserNickname(scn.nextLine());
+			String nickName = scn.nextLine();
+			vo.setUserNickname(nickName);
 			clearScreen();
 			System.out.println("수정 완료");
 			service.updateUser(vo);

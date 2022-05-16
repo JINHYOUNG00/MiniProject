@@ -24,19 +24,20 @@ public class Product {
 	public static int selectProduct;
 
 	public static void productSelectList() {
-		
+
 		System.out.println(
-				"물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+				"┌물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■┐");
 		list = service.selectListProduct();
 		for (ProductVO vo : list) {
 
-			System.out.printf("글번호: %3d  |%50s  |품목: %10s  |%10d원|글쓴이: %10s|%s \n", vo.getProductId(),
+			System.out.printf("│글번호: %3d  |%50s  |품목: %10s  |%10d원|글쓴이: %10s|%s 		       │\n", vo.getProductId(),
 					vo.getProductTitle(), vo.getProductCategory(), vo.getProductPrice(), vo.getUserId(),
 					vo.getStatus());
 //			System.out.printf("카테고리 : %s  가격 : %d  ID : %s \n", vo.getProductCategory(), vo.getProductPrice(), vo.getUserId());
 			System.out.println(
-					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					"│-----------┼----------------------------------------------------------------------------------------------------------------------------------│");
 		}
+		System.out.println("└■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■┘");
 //		selectProduct();
 		Menu.productMenu();
 	}
@@ -44,17 +45,18 @@ public class Product {
 	public static void productSelectList2() {
 		User.clearScreen();
 		System.out.println(
-				"물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+				"┌물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■┐");
 		list = service.selectListProduct2();
 		for (ProductVO vo : list) {
 
-			System.out.printf("글번호: %3d  |%50s  |품목: %10s  |%10d원|글쓴이: %10s|%s \n", vo.getProductId(),
+			System.out.printf("│글번호: %3d  |%50s  |품목: %10s  |%10d원|글쓴이: %10s|%s 		       │\n", vo.getProductId(),
 					vo.getProductTitle(), vo.getProductCategory(), vo.getProductPrice(), vo.getUserId(),
 					vo.getStatus());
 //			System.out.printf("카테고리 : %s  가격 : %d  ID : %s \n", vo.getProductCategory(), vo.getProductPrice(), vo.getUserId());
 			System.out.println(
-					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					"│-----------┼----------------------------------------------------------------------------------------------------------------------------------│");
 		}
+		System.out.println("└■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■┘");
 //		selectProduct();
 		Menu.productMenu();
 	}
@@ -62,37 +64,40 @@ public class Product {
 	public static void productSelectList3() { // 내가 구입가능한 물품목록조회
 		User.clearScreen();
 		System.out.println(
-				"물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+				"┌물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■┐");
 		list = service.selectListProduct3();
 		for (ProductVO vo : list) {
 
-			System.out.printf("글번호: %3d  |%50s  |품목: %10s  |%10d원|글쓴이: %10s|%s \n", vo.getProductId(),
+			System.out.printf("│글번호: %3d  |%50s  |품목: %10s  |%10d원|글쓴이: %10s|%s 		       │\n", vo.getProductId(),
 					vo.getProductTitle(), vo.getProductCategory(), vo.getProductPrice(), vo.getUserId(),
 					vo.getStatus());
 //			System.out.printf("카테고리 : %s  가격 : %d  ID : %s \n", vo.getProductCategory(), vo.getProductPrice(), vo.getUserId());
 			System.out.println(
-					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					"│-----------┼----------------------------------------------------------------------------------------------------------------------------------│");
 		}
+		System.out.println("└■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■┘");
 //		selectProduct();
 		Menu.productMenu();
 	}
+
 	public static void productSelectList4() { // 제목 키워드로 검색
 		System.out.print("검색할 물품 키워드를 입력 >>");
 		String keyword = scn.nextLine();
 		System.out.println();
 		User.clearScreen();
 		System.out.println(
-				"물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
+				"┌물 품 명 단 / 검 색 ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■┐");
 		list = service.selectListProduct4(keyword);
 		for (ProductVO vo : list) {
 
-			System.out.printf("글번호: %3d  |%50s  |품목: %10s  |%10d원|글쓴이: %10s|%s \n", vo.getProductId(),
+			System.out.printf("│글번호: %3d  |%50s  |품목: %10s  |%10d원|글쓴이: %10s|%s 		       │\n", vo.getProductId(),
 					vo.getProductTitle(), vo.getProductCategory(), vo.getProductPrice(), vo.getUserId(),
 					vo.getStatus());
 //			System.out.printf("카테고리 : %s  가격 : %d  ID : %s \n", vo.getProductCategory(), vo.getProductPrice(), vo.getUserId());
 			System.out.println(
-					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+					"│-----------┼----------------------------------------------------------------------------------------------------------------------------------│");
 		}
+		System.out.println("└■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■┘");
 //		selectProduct();
 		Menu.productMenu();
 	}
@@ -115,9 +120,9 @@ public class Product {
 		} else {
 			System.out.print("가격 >>");
 			try {
-			int price = scn.nextInt();
+				int price = scn.nextInt();
 				scn.nextLine();
-				
+
 				if (price == 0) {
 					User.clearScreen();
 					Menu.loginMenu();
@@ -178,34 +183,34 @@ public class Product {
 						User.clearScreen();
 						productSelectList();
 					} else {
-						try {	
-						System.out.print("수정할 가격 >>");
-						int price = scn.nextInt();
-						scn.nextLine();
-						vo.setProductPrice(price);
-						if (price == 0) {
-							User.clearScreen();
-							productSelectList();
-						} else {
-
-							System.out.print("수정할 품목명 >>");
-							String category = scn.nextLine();
-							vo.setProductCategory(category);
-							if (category.equals("0")) {
+						try {
+							System.out.print("수정할 가격 >>");
+							int price = scn.nextInt();
+							scn.nextLine();
+							vo.setProductPrice(price);
+							if (price == 0) {
 								User.clearScreen();
 								productSelectList();
 							} else {
 
-								System.out.print("수정할 세부사항 >>");
-								String detail = scn.nextLine();
-								vo.setProductDetail(detail);
-								service.updateProduct(vo);
+								System.out.print("수정할 품목명 >>");
+								String category = scn.nextLine();
+								vo.setProductCategory(category);
+								if (category.equals("0")) {
+									User.clearScreen();
+									productSelectList();
+								} else {
 
-								User.clearScreen();
-								productSelectList();
-								System.out.println("수정완료");
+									System.out.print("수정할 세부사항 >>");
+									String detail = scn.nextLine();
+									vo.setProductDetail(detail);
+									service.updateProduct(vo);
+
+									User.clearScreen();
+									productSelectList();
+									System.out.println("수정완료");
+								}
 							}
-						}
 						} catch (InputMismatchException e) {
 							System.out.println("가격은 숫자만 입력해주세요");
 							productSelectList();
@@ -262,11 +267,10 @@ public class Product {
 		int input = scn.nextInt();
 		scn.nextLine();
 		vo.setProductId(input);
-		if (!User.loginUserId.equals(service.selectProduct(vo).getUserId())) {
-			System.out.println("해당사항없음");
-		} else {
-
-			if (input != 0) {
+		if (input != 0) {
+			if (!User.loginUserId.equals(service.selectProduct(vo).getUserId())) {
+				System.out.println("해당사항없음");
+			} else {
 
 				String customerId = service.selectProduct(vo).getCustomerName();
 				vo2.setUserId(customerId);
@@ -274,14 +278,14 @@ public class Product {
 
 				System.out.println(
 						"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-				System.out.printf("구매자ID: %5s|구매자 연락처: %10s| \n", vo2.getUserId(), vo2.getUserPhone(),
+				System.out.printf("구매자ID: %5s│구매자 연락처: %10s│ \n", vo2.getUserId(), vo2.getUserPhone(),
 						vo2.getUserPhone());
 				System.out.println(
 						"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-			} else if (input == 0) {
-				User.clearScreen();
-				Menu.memberMenu();
 			}
+		} else if (input == 0) {
+			User.clearScreen();
+			Menu.memberMenu();
 		}
 
 	}
@@ -293,11 +297,10 @@ public class Product {
 		int input = scn.nextInt();
 		scn.nextLine();
 		vo.setProductId(input);
-		if (!User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
-			System.out.println("해당사항없음");
-		} else {
-
-			if (input != 0) {
+		if (input != 0) {
+			if (!User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
+				System.out.println("해당사항없음");
+			} else {
 
 				String sellerId = service.selectProduct(vo).getUserId();
 				vo2.setUserId(sellerId);
@@ -305,14 +308,14 @@ public class Product {
 
 				System.out.println(
 						"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-				System.out.printf("판매자ID: %5s|판매자 연락처: %10s| \n", vo2.getUserId(), vo2.getUserPhone(),
+				System.out.printf("판매자ID: %5s│판매자 연락처: %10s│ \n", vo2.getUserId(), vo2.getUserPhone(),
 						vo2.getUserPhone());
 				System.out.println(
 						"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-			} else if (input == 0) {
-				User.clearScreen();
-				Menu.memberMenu();
 			}
+		} else if (input == 0) {
+			User.clearScreen();
+			Menu.memberMenu();
 		}
 
 	}
@@ -336,7 +339,7 @@ public class Product {
 				User.clearScreen();
 				System.out.println(
 						"■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
-				System.out.printf("%3d|%50s|품목: %10s|%10d원|글쓴이: %10s|%s \n", vo.getProductId(), vo.getProductTitle(),
+				System.out.printf("%3d│%50s│품목: %10s│%10d원│글쓴이: %10s│%s \n", vo.getProductId(), vo.getProductTitle(),
 						vo.getProductCategory(), vo.getProductPrice(), vo.getUserId(), vo.getStatus());
 				System.out.println(
 						"상세내용----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -368,7 +371,7 @@ public class Product {
 
 		list = service.sellProcessList();
 		for (ProductVO vo : list) {
-			System.out.printf("글번호: %3d  |구매자ID: %6s  |글제목: %50s  |%7d원|%s \n", vo.getProductId(), vo.getCustomerName(),
+			System.out.printf("글번호: %3d  │구매자ID: %6s  │글제목: %50s  │%7d원│%s \n", vo.getProductId(), vo.getCustomerName(),
 					vo.getProductTitle(), vo.getProductPrice(), vo.getStatus());
 			System.out.println(
 					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -385,7 +388,7 @@ public class Product {
 
 		list = service.buyProcessList();
 		for (ProductVO vo : list) {
-			System.out.printf("글번호: %3d  |판매자ID: %6s  |글제목: %50s  |%7d원|%s \n", vo.getProductId(), vo.getUserId(),
+			System.out.printf("글번호: %3d  │판매자ID: %6s  │글제목: %50s  │%7d원│%s \n", vo.getProductId(), vo.getUserId(),
 					vo.getProductTitle(), vo.getProductPrice(), vo.getStatus());
 			System.out.println(
 					"----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -418,13 +421,16 @@ public class Product {
 					if (service2.selectUser2(vo2).getPoint() >= price) {
 
 						service.buyProduct(vo);
-					
+
 						System.out.println("구입신청되었습니다. \n#########  판매자 정보는 회원메뉴 5번 구매중인물품조회에 있습니다.  #########");
-						System.out.println("#########  고객님의 잔여 금액은 " + service2.selectUser2(vo2).getPoint() + "원 입니다.  #########");
+						System.out.println(
+								"#########  고객님의 잔여 금액은 " + service2.selectUser2(vo2).getPoint() + "원 입니다.  #########");
 						System.out.println("#########  물품을 수령하신 후 구매 확정하시면 정상적으로 거래가 완료됩니다.  #########");
+						System.out.println(
+								"■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 
 					} else {
-						
+
 						System.out.println("금액이 부족합니다. 고객님의 잔여 금액은 " + service2.selectUser2(vo2).getPoint() + "원 입니다.");
 					}
 				} else if (!service.selectProduct(vo).getStatus().equals("거래가능")) {
@@ -441,51 +447,59 @@ public class Product {
 	public static void buyconfirm() {
 		ProductVO vo = new ProductVO();
 		UserVO vo2 = new UserVO();
-		System.out.print("구매 확정할 글번호 입력 >>");
+		System.out.print("구매 확정할 글번호 입력 (0.취소)>>");
 		int input = scn.nextInt();
 		scn.nextLine();
-		vo.setProductId(input);
-		int price = service.selectProduct(vo).getProductPrice();
-		String sellerId = service.selectProduct(vo).getUserId();
-		vo2.setUserId(sellerId);
-		if (service2.selectUser(vo2).getBlackList() != null && service2.selectUser(vo2).getBlackList().equals("Y")) {
-			System.out.println("판매자가 블랙리스트에 지정되어 구매확정할 수 없습니다. 구매 취소해주세요.");
-		} else {
-
-			if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
-				vo.setUserId(sellerId);
-				vo.setProductPrice(price);
-				service.purchaseConfirm(vo);
-				System.out.println("구매 확정되었습니다.");
+		if (input != 0) {
+			vo.setProductId(input);
+			int price = service.selectProduct(vo).getProductPrice();
+			String sellerId = service.selectProduct(vo).getUserId();
+			vo2.setUserId(sellerId);
+			if (service2.selectUser(vo2).getBlackList() != null
+					&& service2.selectUser(vo2).getBlackList().equals("Y")) {
+				System.out.println("판매자가 블랙리스트에 지정되어 구매확정할 수 없습니다. 구매 취소해주세요.");
 			} else {
-				System.out.println("해당사항 없습니다.");
+
+				if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
+					vo.setUserId(sellerId);
+					vo.setProductPrice(price);
+					service.purchaseConfirm(vo);
+					System.out.println("구매 확정되었습니다.");
+				} else {
+					System.out.println("해당사항 없습니다.");
+				}
 			}
+		} else if (input == 0) {
+			Menu.buyerMenu();
 		}
 	}
 
 	public static void refund() {
 		ProductVO vo = new ProductVO();
 		UserVO vo2 = new UserVO();
-		System.out.print("환불할 글 번호 입력 >>");
+		System.out.print("환불할 글 번호 입력 (0.취소)>>");
 		int input = scn.nextInt();
 		scn.nextLine();
-		vo.setProductId(input);
-		int price = service.selectProduct(vo).getProductPrice();
-		vo2.setPoint(price);
-		
-		if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
-			String sellerId = service.selectProduct(vo).getUserId();
-			vo2.setUserId(sellerId);
-			vo2.setRefund(input);
-			service2.refundUpdate(vo2);
-			System.out.println("환불되었습니다.");
-			if (service2.selectUser2(vo2).getRefund() >= 10) {
-				service2.addBlackList(vo2);
-			}
-		} else {
-			System.out.println("구입한 물품이 아닙니다.");
-		}
+		if (input != 0) {
+			vo.setProductId(input);
+			int price = service.selectProduct(vo).getProductPrice();
+			vo2.setPoint(price);
 
+			if (User.loginUserId.equals(service.selectProduct(vo).getCustomerName())) {
+				String sellerId = service.selectProduct(vo).getUserId();
+				vo2.setUserId(sellerId);
+				vo2.setRefund(input);
+				service2.refundUpdate(vo2);
+				System.out.println("환불되었습니다.");
+				if (service2.selectUser2(vo2).getRefund() >= 10) {
+					service2.addBlackList(vo2);
+				}
+			} else {
+				System.out.println("구입한 물품이 아닙니다.");
+			}
+		} else if (input == 0) {
+			Menu.buyerMenu();
+		}
 	}
 
 }
