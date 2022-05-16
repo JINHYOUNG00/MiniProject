@@ -137,27 +137,29 @@ public class Menu {
 		}
 
 	}
-
+//productSelectList4()
 	public static void productMenu() {
 		boolean b = true;
 		while (b) {
-			System.out.println("1. 조회/구입 2. 물품수정 3. 물품삭제 4. 내가쓴글 제외 목록 5.구입가능한 물품목록 9. 돌아가기");
+			System.out.println("1. 조회/구입 2. 물품검색 3. 물품수정 4. 물품삭제 5. 내가쓴글 제외 목록 6.구입가능한 물품목록 9. 돌아가기");
 			System.out.println(
 					"■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■");
 			System.out.print("이용하실 메뉴를 입력하세요 >> ");
 			menu1 = scn.nextLine();
-			if (menu1.equals("1") || menu1.equals("2") || menu1.equals("3") || menu1.equals("4") || menu1.equals("5")
+			if (menu1.equals("1") || menu1.equals("2") || menu1.equals("3") || menu1.equals("4") || menu1.equals("5")|| menu1.equals("6")
 					|| menu1.equals("9")) {
 				menu2 = Integer.parseInt(menu1);
 				if (menu2 == 1) {
 					Product.selectProduct();
 				} else if (menu2 == 2) {
-					Product.updateProduct();
+					Product.productSelectList4();
 				} else if (menu2 == 3) {
-					Product.deleteProduct();
+					Product.updateProduct();
 				} else if (menu2 == 4) {
-					Product.productSelectList2();
+					Product.deleteProduct();
 				} else if (menu2 == 5) {
+					Product.productSelectList2();
+				} else if (menu2 == 6) {
 					Product.productSelectList3();
 				} else if (menu2 == 9) {
 					User.clearScreen();

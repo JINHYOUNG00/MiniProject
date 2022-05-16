@@ -179,7 +179,7 @@ public class UserServiceImpl implements UserService {
 	public UserVO selectUser(UserVO user) {
 		UserVO vo = new UserVO();
 		
-		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME FROM USERS WHERE USER_ID = ? AND USER_PASSWORD = ?";
+		String sql = "SELECT USER_ID, PHONE_NUMBER, ADDRESS, USER_NICKNAME, POINT FROM USERS WHERE USER_ID = ? AND USER_PASSWORD = ?";
 		try {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, user.getUserId());
@@ -192,6 +192,7 @@ public class UserServiceImpl implements UserService {
 				vo.setUserPhone(rs.getString("PHONE_NUMBER"));
 				vo.setUserAddress(rs.getString("ADDRESS"));
 				vo.setUserNickname(rs.getString("USER_NICKNAME"));
+				vo.setPoint(rs.getInt("POINT"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

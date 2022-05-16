@@ -137,6 +137,45 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
+	public List<ProductVO> selectListProduct4(String keyword) { // 내가 구입가능한 물품목록조회
+		ProductVO vo = new ProductVO();
+		List<ProductVO> products = new ArrayList<ProductVO>();
+		ProductVO product;
+		String sql = "SELECT PRODUCT_ID, u.user_id, PRODUCT_ID, PRODUCT_TITLE, PRICE, PRODUCT_CATEGORY, PRODUCT_DETAIL, status\r\n"
+				+ "								FROM products p JOIN users u\r\n"
+				+ "								ON p.user_id = u.user_id\r\n"
+				+ "				                where not u.user_id = ? and status = '거래가능' and u.black_list = 'N' and product_title like '%'||?||'%'\r\n"
+				+ "								order by p.product_id asc";
+				
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, User.loginUserId);
+			psmt.setString(2, keyword);
+			
+			rs = psmt.executeQuery();
+
+			
+			while (rs.next()) {
+				product = new ProductVO();
+				product.setProductId(rs.getInt("PRODUCT_ID"));
+				product.setUserId(rs.getString("User_ID"));
+				product.setProductTitle(rs.getString("PRODUCT_TITLE"));
+				product.setProductPrice(rs.getInt("PRICE"));
+				product.setProductCategory(rs.getString("PRODUCT_CATEGORY"));
+				product.setProductDetail(rs.getString("PRODUCT_DETAIL"));
+				product.setStatus(rs.getString("status"));
+				products.add(product);
+			}
+			
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return products;
+	}
+	
+	@Override
 	public List<ProductVO> sellProcessList() { // 판매중인 물품 리스트 조회
 		List<ProductVO> products = new ArrayList<ProductVO>();
 		ProductVO product = new ProductVO();

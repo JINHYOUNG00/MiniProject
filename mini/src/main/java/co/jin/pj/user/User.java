@@ -28,7 +28,7 @@ public class User {
 		System.out.print("ID >>");
 		String userId = scn.nextLine();
 		vo.setUserId(userId);
-		if (service.selectUser2(vo).getBlackList().equals("Y")) {
+		if (service.selectUser2(vo).getBlackList() != null && service.selectUser2(vo).getBlackList().equals("Y")) {
 			System.out.println("블랙리스트 접속 차단");
 		} else {
 			System.out.print("비밀번호 >>");
@@ -83,7 +83,7 @@ public class User {
 //		String userNickname = scn.nextLine();
 		vo.setBlackList("N");
 		vo.setRefund(0);
-		vo.setPoint(10000);
+		vo.setPoint(100000);
 
 		service.insertUser(vo);
 
@@ -155,6 +155,7 @@ public class User {
 
 			System.out.printf("ID : %s  연락처 : %s  주소 : %s  닉네임 : %s \n", vo.getUserId(), vo.getUserPhone(),
 					vo.getUserAddress(), vo.getUserNickname());
+			System.out.println("남은 돈: " + vo.getPoint());
 		} else {
 			System.out.println("ID, 비밀번호가 일치하지 않습니다.");
 		}
